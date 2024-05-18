@@ -3,7 +3,9 @@ package com.example.mapper;
 import com.example.dto.RoleDTO;
 import com.example.entity.Role;
 import org.modelmapper.ModelMapper;
+import org.springframework.stereotype.Component;
 
+@Component
 public class RoleMapper {
 
     private ModelMapper modelMapper;
