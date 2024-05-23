@@ -29,36 +29,36 @@ public class ProjectController {
 
         model.addAttribute("project", new ProjectDTO());
         model.addAttribute("managers", userService.listAllByRole("manager"));
-        model.addAttribute("projects", projectService.findAll());
+        model.addAttribute("projects", projectService.listAllProjects());
 
         return "/project/create";
 
     }
-//
-//    @PostMapping("/create")
-//    public String insertProject(@Valid @ModelAttribute("project") ProjectDTO project, BindingResult bindingResult, Model model) {
-//
-//        if (bindingResult.hasErrors()) {
-//
-//            model.addAttribute("managers", userService.findManagers());
-//            model.addAttribute("projects", projectService.findAll());
-//
-//            return "/project/create";
-//
-//        }
-//
-//        projectService.save(project);
-//
-//        return "redirect:/project/create";
-//
-//    }
-//
-//    @GetMapping("/delete/{projectCode}")
-//    public String deleteProject(@PathVariable("projectCode") String projectCode) {
-//        projectService.deleteById(projectCode);
-//        return "redirect:/project/create";
-//    }
-//
+
+    @PostMapping("/create")
+    public String insertProject(@ModelAttribute("project") ProjectDTO project, BindingResult bindingResult, Model model) {
+
+        if (bindingResult.hasErrors()) {
+
+            model.addAttribute("managers", userService.listAllByRole("manager"));
+            model.addAttribute("projects", projectService.listAllProjects());
+
+            return "/project/create";
+
+        }
+
+        projectService.save(project);
+
+        return "redirect:/project/create";
+
+    }
+
+    @GetMapping("/delete/{projectCode}")
+    public String deleteProject(@PathVariable("projectCode") String projectCode) {
+        projectService.delete(projectCode);
+        return "redirect:/project/create";
+    }
+
 //    @GetMapping("/complete/{projectCode}")
 //    public String completeProject(@PathVariable("projectCode") String projectCode) {
 //        projectService.complete(projectService.findById(projectCode));
@@ -75,7 +75,7 @@ public class ProjectController {
 //        return "/project/update";
 //
 //    }
-//
+
 //    @PostMapping("/update")
 //    public String updateProject(@Valid @ModelAttribute("project") ProjectDTO project, BindingResult bindingResult, Model model) {
 //
