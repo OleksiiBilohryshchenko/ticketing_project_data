@@ -2,6 +2,7 @@ package com.example.controller;
 
 import com.example.dto.ProjectDTO;
 import com.example.dto.UserDTO;
+import com.example.service.ProjectService;
 import com.example.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -27,7 +28,7 @@ public class ProjectController {
     public String createProject(Model model) {
 
         model.addAttribute("project", new ProjectDTO());
-        model.addAttribute("managers", userService.findManagers());
+        model.addAttribute("managers", userService.listAllByRole("manager"));
         model.addAttribute("projects", projectService.findAll());
 
         return "/project/create";

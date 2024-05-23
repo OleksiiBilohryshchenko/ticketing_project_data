@@ -73,4 +73,12 @@ public class UserServiceImpl implements UserService {
 
     }
 
+    @Override
+    public List<UserDTO> listAllByRole(String role) {
+
+        List<User> users = userRepository.
+
+        return null;
+    }
+
 }
