@@ -1,5 +1,6 @@
 package com.example.service;
 
+import com.example.dto.ProjectDTO;
 import com.example.dto.TaskDTO;
 
 import java.util.List;
@@ -13,6 +14,7 @@ public interface TaskService {
     TaskDTO findById(Long id);
     int totalNonCompletedTask(String projectCode);
     int totalCompletedTask(String projectCode);
+    void deleteByProject(ProjectDTO projectDTO);
 
 
 }

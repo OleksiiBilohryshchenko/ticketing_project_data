@@ -1,9 +1,11 @@
 package com.example.service.impl;
 
+import com.example.dto.ProjectDTO;
 import com.example.dto.TaskDTO;
+import com.example.entity.Project;
 import com.example.entity.Task;
-import com.example.entity.User;
 import com.example.enums.Status;
+import com.example.mapper.ProjectMapper;
 import com.example.mapper.TaskMapper;
 import com.example.repository.TaskRepository;
 import com.example.service.TaskService;
@@ -19,10 +21,12 @@ public class TaskServiceImpl implements TaskService {
 
     private final TaskRepository taskRepository;
     private final TaskMapper taskMapper;
+    private final ProjectMapper projectMapper;
 
-    public TaskServiceImpl(TaskRepository taskRepository, TaskMapper taskMapper) {
+    public TaskServiceImpl(TaskRepository taskRepository, TaskMapper taskMapper, ProjectMapper projectMapper) {
         this.taskRepository = taskRepository;
         this.taskMapper = taskMapper;
+        this.projectMapper = projectMapper;
     }
 
     @Override
@@ -84,5 +88,12 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public int totalCompletedTask(String projectCode) {
         return taskRepository.totalCompletedTasks(projectCode);
+    }
+
+    @Override
+    public void deleteByProject(ProjectDTO projectDTO) {
+        Project project = projectMapper.convertToEntity(projectDTO);
+        List<Task> tasks = taskRepository.findAllByProject(project);
+        tasks.forEach(task -> delete(task.getId()));
     }
 }
