@@ -20,29 +20,30 @@ import java.util.List;
 @Configuration
 public class SecurityConfig {
 
-    @Bean
-    public UserDetailsService userDetailsService(PasswordEncoder encoder){
-
-        List<UserDetails> userList = new ArrayList<>();
-
-        userList.add(
-                new User("Mike", encoder.encode("password"), Arrays.asList(new SimpleGrantedAuthority("ROLE_ADMIN"))));
-        userList.add(
-                new User("Alex", encoder.encode("password"), Arrays.asList(new SimpleGrantedAuthority("ROLE_MANAGER"))));
-
-
-        return new InMemoryUserDetailsManager(userList);
-
-    }
+//    @Bean
+//    public UserDetailsService userDetailsService(PasswordEncoder encoder){
+//
+//        List<UserDetails> userList = new ArrayList<>();
+//
+//        userList.add(
+//                new User("Mike", encoder.encode("password"), Arrays.asList(new SimpleGrantedAuthority("ROLE_ADMIN"))));
+//        userList.add(
+//                new User("Alex", encoder.encode("password"), Arrays.asList(new SimpleGrantedAuthority("ROLE_MANAGER"))));
+//
+//
+//        return new InMemoryUserDetailsManager(userList);
+//
+//    }
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/user/**").hasRole("ADMIN")
-                        .requestMatchers("/project/**").hasRole("MANAGER")
-                        .requestMatchers("/task/employee/**").hasRole("EMPLOYEE")
-                        .requestMatchers("/task/**").hasRole("MANAGER")
+//                        .requestMatchers("/user/**").hasRole("ADMIN")
+                        .requestMatchers("/user/**").hasAuthority("ROLE_ADMIN")
+//                        .requestMatchers("/project/**").hasRole("MANAGER")
+//                        .requestMatchers("/task/employee/**").hasRole("EMPLOYEE")
+//                        .requestMatchers("/task/**").hasRole("MANAGER")
 //                        .requestMatchers("/task/**").hasAuthority("ROLE_EMPLOYEE")
                         .requestMatchers(
                                 "/",
