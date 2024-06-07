@@ -41,9 +41,9 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorize -> authorize
 //                        .requestMatchers("/user/**").hasRole("ADMIN") ROLE_ADMIN -> must be same in DB, hasRole adding prefix
                         .requestMatchers("/user/**").hasAuthority("Admin")
-//                        .requestMatchers("/project/**").hasRole("MANAGER")
-//                        .requestMatchers("/task/employee/**").hasRole("EMPLOYEE")
-//                        .requestMatchers("/task/**").hasRole("MANAGER")
+                        .requestMatchers("/project/**").hasAuthority("Manager")
+                        .requestMatchers("/task/employee/**").hasAuthority("Employee")
+                        .requestMatchers("/task/**").hasAuthority("Manager")
 //                        .requestMatchers("/task/**").hasAnyRole("MANAGER","ADMIN")
 //                        .requestMatchers("/task/**").hasAuthority("ROLE_EMPLOYEE") ROLE_EMPLOYEE not DB scenario, for manual creation
                         .requestMatchers(
