@@ -39,12 +39,13 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(authorize -> authorize
-//                        .requestMatchers("/user/**").hasRole("ADMIN")
+//                        .requestMatchers("/user/**").hasRole("ADMIN") ROLE_ADMIN -> must be same in DB
                         .requestMatchers("/user/**").hasAuthority("Admin")
 //                        .requestMatchers("/project/**").hasRole("MANAGER")
 //                        .requestMatchers("/task/employee/**").hasRole("EMPLOYEE")
 //                        .requestMatchers("/task/**").hasRole("MANAGER")
-//                        .requestMatchers("/task/**").hasAuthority("ROLE_EMPLOYEE")
+//                        .requestMatchers("/task/**").hasAnyRole("MANAGER","ADMIN")
+//                        .requestMatchers("/task/**").hasAuthority("ROLE_EMPLOYEE") not DB scenario, for manual creation
                         .requestMatchers(
                                 "/",
                                 "/login",
