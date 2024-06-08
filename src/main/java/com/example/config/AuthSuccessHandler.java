@@ -1,13 +1,13 @@
 package com.example.config;
 
-import jakarta.servlet.ServletException;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Set;
 
@@ -24,7 +24,7 @@ public class AuthSuccessHandler implements AuthenticationSuccessHandler {
         }
 
         if(roles.contains("Manager")){
-            response.sendRedirect("/project/create");
+            response.sendRedirect("/task/create");
         }
 
         if(roles.contains("Employee")){

@@ -36,47 +36,44 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http
-                .authorizeHttpRequests(authorize -> authorize
-//                        .requestMatchers("/user/**").hasRole("ADMIN") ROLE_ADMIN -> must be same in DB, hasRole adding prefix
-                        .requestMatchers("/user/**").hasAuthority("Admin")
-                        .requestMatchers("/project/**").hasAuthority("Manager")
-                        .requestMatchers("/task/employee/**").hasAuthority("Employee")
-                        .requestMatchers("/task/**").hasAuthority("Manager")
-//                        .requestMatchers("/task/**").hasAnyRole("MANAGER","ADMIN")
-//                        .requestMatchers("/task/**").hasAuthority("ROLE_EMPLOYEE") ROLE_EMPLOYEE not DB scenario, for manual creation
-                        .requestMatchers(
-                                "/",
-                                "/login",
-                                "/fragments/**",
-                                "/assets/**",
-                                "/images/**"
-                        ).permitAll()
-                        .anyRequest().authenticated()
-                )
-                .formLogin( form -> form
-                        .loginPage("/login")
-//                        .defaultSuccessUrl("/welcome")
-                        .successHandler(authSuccessHandler)
-                        .failureUrl("/login?error=true")
-                        .permitAll()
-                )
-                .logout(logout -> logout
-                        .logoutRequestMatcher(new AntPathRequestMatcher("/logout")) // URL to trigger logout
-                        .logoutSuccessUrl("/login?logout=true") // Redirect after successful logout
-                        .permitAll() // Allow all users to see the logout page
-                )
-                .rememberMe(rememberMe -> rememberMe
-                                .key("uniqueAndSecretKey") // Key for remember-me functionality
-                                .tokenValiditySeconds(120) // Token validity period
-                                .userDetailsService(securityService) // remember who is loggin
-                );
 
-                return http.build();
-
+        return http
+                .authorizeRequests()
+//                .antMatchers("/user/**").hasRole("ADMIN")
+                .antMatchers("/user/**").hasAuthority("Admin")
+                .antMatchers("/project/**").hasAuthority("Manager")
+                .antMatchers("/task/employee/**").hasAuthority("Employee")
+                .antMatchers("/task/**").hasAuthority("Manager")
+//                .antMatchers("/task/**").hasAnyRole("EMPLOYEE","ADMIN")
+//                .antMatchers("/task/**").hasAuthority("ROLE_EMPLOYEE")
+                .antMatchers(
+                        "/",
+                        "/login",
+                        "/fragments/**",
+                        "/assets/**",
+                        "/images/**"
+                ).permitAll()
+                .anyRequest().authenticated()
+                .and()
+//                .httpBasic()
+                .formLogin()
+                .loginPage("/login")
+//                    .defaultSuccessUrl("/welcome")
+                .successHandler(authSuccessHandler)
+                .failureUrl("/login?error=true")
+                .permitAll()
+                .and()
+                .logout()
+                .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+                .logoutSuccessUrl("/login")
+                .and()
+                .rememberMe()
+                .tokenValiditySeconds(120)
+                .key("cydeo")
+                .userDetailsService(securityService)
+                .and()
+                .build();
     }
 
 
-
 }
-
