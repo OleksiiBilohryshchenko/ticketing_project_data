@@ -17,21 +17,31 @@ public class BaseEntityListener extends AuditingEntityListener {
 
     @PrePersist
     private void onPrePersist(BaseEntity baseEntity){
+
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
         baseEntity.setInsertDateTime(LocalDateTime.now());
         baseEntity.setLastUpdateDateTime(LocalDateTime.now());
 
         if (authentication != null && !authentication.getName().equals("anonymousUser")){ // valid user
             Object principal = authentication.getPrincipal();
-            baseEntity.setInsertUserId( ((UserPrincipal) principal).getId());
+            baseEntity.setInsertUserId( ((UserPrincipal) principal).getId()); // get id from logged user id (mapped user)
             baseEntity.setLastUpdateUserId( ((UserPrincipal) principal).getId());
         }
     }
 
     @PreUpdate
-    private void onPreUpdate(){
-        this.lastUpdateDateTime = LocalDateTime.now();
-        this.lastUpdateUserId = 1L;
+    private void onPreUpdate(BaseEntity baseEntity){
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        baseEntity.setLastUpdateDateTime(LocalDateTime.now());
+
+        if (authentication != null && !authentication.getName().equals("anonymousUser")){ // valid user
+            Object principal = authentication.getPrincipal();
+            baseEntity.setLastUpdateUserId( ((UserPrincipal) principal).getId());
+        }
+
     }
 
 }
