@@ -24,4 +24,6 @@ public class TicketingProjectDataApplication {
         return new BCryptPasswordEncoder();
     }
 
+
+
 }
